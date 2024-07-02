@@ -12,14 +12,30 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
-const Form = () => {
+interface Props {
+  purchaseSubmit: (purchase: {
+    key: number;
+    description: string;
+    amount: number;
+    category: string;
+  }) => void;
+  latestKey: number;
+}
+
+const Form = ({ purchaseSubmit, latestKey }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = (data: FieldValues) => console.log(data);
+  const onSubmit = (data: FieldValues) =>
+    purchaseSubmit({
+      key: latestKey + 1,
+      description: data.description,
+      amount: data.amount,
+      category: data.category,
+    });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

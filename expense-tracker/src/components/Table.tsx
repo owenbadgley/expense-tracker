@@ -2,10 +2,16 @@ import Table from "react-bootstrap/Table";
 import CloseButton from "react-bootstrap/CloseButton";
 
 interface Props {
-  purchaseList: { description: string; amount: number; category: string }[];
+  purchaseList: {
+    key: number;
+    description: string;
+    amount: number;
+    category: string;
+  }[];
+  handleDelete: (key: number) => void;
 }
 
-const CostTable = ({ purchaseList }: Props) => {
+const CostTable = ({ purchaseList, handleDelete }: Props) => {
   let totalCost = 0;
   purchaseList.map((item) => (totalCost += item.amount));
 
@@ -33,16 +39,18 @@ const CostTable = ({ purchaseList }: Props) => {
           {purchaseList.map((item) => (
             <tr>
               <td>{item.description}</td>
-              <td>{item.amount}</td>
+              <td>${item.amount}</td>
               <td>{item.category}</td>
               <td>
-                <CloseButton></CloseButton>
+                <CloseButton
+                  onClick={() => handleDelete(item.key)}
+                ></CloseButton>
               </td>
             </tr>
           ))}
           <tr>
             <td>Total</td>
-            <td>{totalCost}</td>
+            <td>${totalCost}</td>
             <td></td>
             <td></td>
           </tr>
