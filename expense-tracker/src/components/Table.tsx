@@ -1,5 +1,7 @@
 import Table from "react-bootstrap/Table";
 import CloseButton from "react-bootstrap/CloseButton";
+import ExpenseFilter from "./ExpenseFilter";
+import { useState } from "react";
 
 interface Props {
   purchaseList: {
@@ -12,20 +14,22 @@ interface Props {
 }
 
 const CostTable = ({ purchaseList, handleDelete }: Props) => {
-  let totalCost = 0;
-  purchaseList.map((item) => (totalCost += item.amount));
+  let totalCost: number;
+  const [filteredList, setFilteredList] = useState([...purchaseList]);
+
+  const handleFilter = (filterCategory: string) => {
+    if (filterCategory === "all") {
+      setFilteredList([...purchaseList]);
+    } else {
+      setFilteredList(
+        purchaseList.filter((purchase) => purchase.category !== filterCategory)
+      );
+    }
+  };
 
   return (
     <div>
-      <div className="mb-3">
-        <label className="form-label">Sort Table</label>
-        <select id="category" name="category" className="form-control">
-          <option value="all">All</option>
-          <option value="food">Food</option>
-          <option value="gas">Gas</option>
-          <option value="entertainment">Entertainment</option>
-        </select>
-      </div>
+      <ExpenseFilter filter={handleFilter}></ExpenseFilter>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -50,7 +54,12 @@ const CostTable = ({ purchaseList, handleDelete }: Props) => {
           ))}
           <tr>
             <td>Total</td>
-            <td>${totalCost}</td>
+            <td>
+              $
+              {filteredList.length > 0
+                ? filteredList.map((item) => (totalCost += item.amount))
+                : 0}
+            </td>
             <td></td>
             <td></td>
           </tr>
