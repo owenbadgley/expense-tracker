@@ -1,6 +1,5 @@
 import Table from "react-bootstrap/Table";
 import CloseButton from "react-bootstrap/CloseButton";
-import { useState } from "react";
 
 interface Props {
   purchaseList: {
