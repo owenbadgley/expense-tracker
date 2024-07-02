@@ -13,8 +13,8 @@ interface Props {
 }
 
 const CostTable = ({ purchaseList, handleDelete }: Props) => {
-  let totalCost: number;
-
+  let totalCost = 0;
+  purchaseList.forEach((item) => (totalCost += item.amount));
   return (
     <div>
       <Table striped bordered hover>
@@ -43,12 +43,7 @@ const CostTable = ({ purchaseList, handleDelete }: Props) => {
           ))}
           <tr>
             <td>Total</td>
-            <td>
-              $
-              {purchaseList.length > 0
-                ? purchaseList.map((item) => (totalCost += item.amount))
-                : 0}
-            </td>
+            <td>${totalCost}</td>
             <td></td>
             <td></td>
           </tr>
