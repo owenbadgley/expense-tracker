@@ -2,11 +2,13 @@ import { useState } from "react";
 import "./App.css";
 import Form from "./components/Form";
 import Table from "./components/Table";
+import ExpenseFilter from "./components/ExpenseFilter";
 
 function App() {
   const [purchaseList, setPurchaseList] = useState([
     { key: 0, description: "example", amount: 0, category: "example" },
   ]);
+  const [filter, setFilter] = useState("all");
 
   const handleNewPurchase = (purchase: {
     key: number;
@@ -23,6 +25,15 @@ function App() {
         category: purchase.category,
       },
     ]);
+  };
+
+  const updateFilter = (filter: string) => {
+    setFilter(filter);
+  };
+
+  const generateFilteredList = () => {
+    if (filter === "all") return purchaseList;
+    return purchaseList.filter((purchase) => purchase.category === filter);
   };
 
   const handleRemovePurchase = (key: number) => {
@@ -43,9 +54,10 @@ function App() {
         }
         purchaseSubmit={handleNewPurchase}
       ></Form>
+      <ExpenseFilter filter={updateFilter}></ExpenseFilter>
       <Table
         handleDelete={handleRemovePurchase}
-        purchaseList={purchaseList}
+        purchaseList={generateFilteredList()}
       ></Table>
     </div>
   );
