@@ -6,6 +6,9 @@ interface Props {
 }
 
 const CostTable = ({ purchaseList }: Props) => {
+  let totalCost = 0;
+  purchaseList.map((item) => (totalCost += item.amount));
+
   return (
     <div>
       <div className="mb-3">
@@ -37,6 +40,12 @@ const CostTable = ({ purchaseList }: Props) => {
               </td>
             </tr>
           ))}
+          <tr>
+            <td>Total</td>
+            <td>{totalCost}</td>
+            <td></td>
+            <td></td>
+          </tr>
         </tbody>
       </Table>
     </div>
